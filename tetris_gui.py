@@ -151,7 +151,10 @@ class TetrisApp:
 
         self.bind_events()
         self.spawn_new_piece()
-        self.update_ui()
+        # Draw immediately so the initial piece/board is visible as soon as the
+        # window appears. Without this, some environments (e.g. macOS) would
+        # show a blank canvas until the user pressed a key.
+        self.draw_board()
         self.schedule_tick()
 
     def bind_events(self) -> None:
@@ -215,6 +218,11 @@ class TetrisApp:
             self.current_position = new_pos
         else:
             self.lock_piece()
+        # Always redraw after a tick so automatic gravity visibly moves the
+        # piece even without user input.
+        self.draw_board()
+        if not manual:
+            self.schedule_tick()
         if manual:
             self.draw_board()
 

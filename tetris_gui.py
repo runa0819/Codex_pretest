@@ -223,6 +223,8 @@ class TetrisApp:
         self.draw_board()
         if not manual:
             self.schedule_tick()
+        if manual:
+            self.draw_board()
 
     def lock_piece(self) -> None:
         if self.current_shape is None:
